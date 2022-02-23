@@ -1,16 +1,16 @@
 using UnityEngine;
 
 // The buttons used to spawn the blocks
-public class BlocksButtonUI : MonoBehaviour
+public class BlocksSpawningButtonUI : MonoBehaviour
 {
     // The name of the Building Block I'll drag and drop that will be passed to all of the spawn managers
     [SerializeField] string thisBlocksName;
 
     BuildManager buildManager; MousePointerScript mousePointer;
-    [SerializeField] Material semiTransparentMaterial;
 
     // The mesh of the block the button spawns. Used to spawn a transparent copy of it when drag & dropping
     Mesh thisBlocksMesh;
+    [SerializeField] BlockPreviewScriptableObject blockPreviewSO;
 
     // =============== [GENERAL UNITY METHODS] ===============
 
@@ -39,7 +39,11 @@ public class BlocksButtonUI : MonoBehaviour
 
         // Initialize everything
         _blockMesh.mesh = thisBlocksMesh;
+        
         _blockScript.thisBlocksName = thisBlocksName;
-        _blockRenderer.material = semiTransparentMaterial;
+        _blockScript._materials = blockPreviewSO._materials;
+        _blockScript.nodeLayer = blockPreviewSO.nodeLayer;
+
+        _blockRenderer.material = _blockScript._materials[0];
     }
 }

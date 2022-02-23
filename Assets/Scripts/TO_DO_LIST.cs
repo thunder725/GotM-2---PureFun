@@ -14,7 +14,7 @@ namespace ToDoList
                         - Paning
                         - Rotation around a point on the ground at the center of the screen
 
-    - Mark the good space as taken when spawning a bridge block
+    - Show the trajectory of the Ramps when placing them.
 
     ======================= [VISUALS] =======================
 

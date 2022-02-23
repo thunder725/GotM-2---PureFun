@@ -4,7 +4,7 @@ using UnityEngine;
 
 
 // Thanks to https://gamedev.stackexchange.com/questions/74393/how-to-edit-key-value-pairs-like-a-dictionary-in-unitys-inspector
-[CreateAssetMenu(fileName = "Dictionnary", menuName = "Create Name to Blocks Dictionnary")]
+[CreateAssetMenu(fileName = "Dictionnary", menuName = "Scriptable Objects/Create Name to Blocks Dictionnary")]
 public class NameToBlocksDictionnary : ScriptableObject
 {
     [System.Serializable]

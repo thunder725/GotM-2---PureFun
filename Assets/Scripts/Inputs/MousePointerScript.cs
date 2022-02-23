@@ -3,6 +3,7 @@ using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.EventSystems;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
 public class MousePointerScript : MonoBehaviour
@@ -10,14 +11,16 @@ public class MousePointerScript : MonoBehaviour
     MouseInputs inputs;
     // This number indicates if the mouse position is over the left panel with the buttons or not using mouse position
     [SerializeField] float leftPanelThreshold;
-    [SerializeField] LayerMask MouseHitLayer/*6*/, VisualizerCubesLayer /*7*/;
+    [SerializeField] LayerMask MouseHitLayer/*6*/, VisualizerCubesLayer /*7*/, BlocksLayer /*8*/;
     [SerializeField] bool showDebugSphere;
-    GameObject previousCubeReferenced;
-    public GameObject currentSelectedCube; 
+    GameObject previousCubeReferenced, previousSelectedBlock;
+    public GameObject currentSelectedCube, currentSelectedBlock; 
     public GridNodesScript currentSelectedCubeScript;
     [SerializeField] GameObject DebugSphere; GameObject _sphere;
     public static MousePointerScript _instance;
     GraphicRaycaster raycaster; EventSystem eventSystem; PointerEventData pointerEvent;
+    public UnityAction CurrentlySelectedCubeChanged;
+    
 
     List<RaycastResult> results = new List<RaycastResult>();
 
@@ -37,7 +40,6 @@ public class MousePointerScript : MonoBehaviour
             Destroy(gameObject);
         }
 
-
         // Get References
         raycaster = FindObjectOfType<GraphicRaycaster>();
         eventSystem = FindObjectOfType<EventSystem>();
@@ -50,6 +52,7 @@ public class MousePointerScript : MonoBehaviour
             _sphere = Instantiate(DebugSphere, Vector3.zero, Quaternion.identity);
             _sphere.transform.localScale = Vector3.one * 4; // 4 because the SphereCast RADIUS is 2 so the scale (diameter) of this one is 4}
         }
+
     }
 
     void Update()
@@ -81,7 +84,7 @@ public class MousePointerScript : MonoBehaviour
             {
                 // Debug.Log("FOUND CUBES");
 
-                currentSelectedCube = FindClosestCube(_cubes, raycastHit.point);
+                currentSelectedCube = TransformPlus.ReturnClosest(_cubes, raycastHit.point);
                 // Got the closest cube
 
                 currentSelectedCubeScript = currentSelectedCube.GetComponent<GridNodesScript>();
@@ -90,6 +93,12 @@ public class MousePointerScript : MonoBehaviour
                 // Remove the color from the last one 
                 if (currentSelectedCube != previousCubeReferenced)
                 {
+                    // This is only called if the currently selected cube is different from the previous one
+                    // So I invoke the action for the block preview to check if it is in a correct spot.
+                    // It is to prevent doing a raycast check every frame, only when moving around.
+                    if (CurrentlySelectedCubeChanged != null)
+                    {CurrentlySelectedCubeChanged.Invoke();}
+
                     if (previousCubeReferenced != null) // only used for the first time so it doesn't give an error
                     {previousCubeReferenced.GetComponent<GridNodesScript>().ChangeColor(Color.black);}
 
@@ -99,30 +108,7 @@ public class MousePointerScript : MonoBehaviour
                 }
             }
         }
-    }
-
-    // Give the array of cubes to check in and the 3D point to calculate the closest from
-    GameObject FindClosestCube(Collider[] _cubes, Vector3 pointToCalculateFrom)
-    {
-        // Select the closest one only
-        float smallestDistance = 90f;
-        GameObject closestCube = null;
-
-        foreach (Collider /*things returned by SphereCastAll*/ _hit in _cubes)
-        {
-            float distToCube = (pointToCalculateFrom - _hit.transform.position).sqrMagnitude;
-            // if distance is smaller
-            if (distToCube < smallestDistance)
-            {
-                smallestDistance = distToCube;
-                closestCube = _hit.transform.gameObject;
-            }
-        }   
-
-        return closestCube;
-    }
-
-    
+    }    
     
 
     // =========== [PRESSING AND SCROLLING METHODS] =============
@@ -161,13 +147,48 @@ public class MousePointerScript : MonoBehaviour
                     if (_r.gameObject.name.Contains("ButtonImage"))
                     {
                         // Get the script and launch the drag & drop
-                        var _script = _r.gameObject.GetComponent<BlocksButtonUI>();
+                        var _script = _r.gameObject.GetComponent<BlocksSpawningButtonUI>();
                         _script.StartDragAndDrop();
                         return;
                     }
                 }
             }
 
+        }
+        else
+        {
+            // Raycast over the scene from the mouse, try to find a block under the mouse, and make appear a HUD to delete or rotate the block
+
+            // Debug.Log("Scanning");
+
+            Ray ray = Camera.main.ScreenPointToRay(MousePositionOnScreen());
+
+            // Do a raycast that hits the visible block it encounters
+            if (Physics.Raycast(ray, out RaycastHit raycastHit, Mathf.Infinity, BlocksLayer))
+            {
+                // Save the block 
+                currentSelectedBlock = raycastHit.transform.gameObject;
+
+                // Toggle on the Outline
+                currentSelectedBlock.GetComponent<Outline>().enabled = true;                
+
+                // Unselect previous block
+                if (previousSelectedBlock != currentSelectedBlock)
+                {
+                    // Prevent errors
+                    if (previousSelectedBlock != null)
+                    {
+                        // Toggle off the Outline
+                        previousSelectedBlock.GetComponent<Outline>().enabled = false;    
+                    }
+                    
+                    // Replace reference
+                    previousSelectedBlock = currentSelectedBlock;
+                }
+
+                // TO-DO : Make the HUD appear to rotate the element 
+
+            }
         }
         // Debug.Log("CLICKED");
     }

@@ -25,4 +25,43 @@ public class TriangleGrid : MonoBehaviour
         return tempPos;
     }
 
+    // The other way around
+    public static Vector2 GridToIndex(Vector3 gridPos)
+    {
+        Vector2 tempIndex = Vector2.zero;
+
+        // Reverse engineer the positions
+        tempIndex[1] = Mathf.Round(gridPos.z / ( 3 * Mathf.Sin(Mathf.Deg2Rad * 60)));
+
+        tempIndex[0] = Mathf.Round((gridPos.x - 1.5f*tempIndex.y) / 3);
+
+        return tempIndex;
+    }
+
+    public static void DebugTryout()
+    {
+        // A debug function to see if these grid conversions work
+        // Pro tips: they work
+
+        //   \n allows to get to the next line
+        string _string = "Debugging grid with index values (1,-4), (13,17) and (-43, 36) : \n";
+
+        string computeOne(Vector2 indexPos)
+        {
+            string __s = "Starting Index: " + indexPos;
+            Vector3 _pos = IndexToGrid(indexPos);
+            __s += "  / Grid position: " + _pos;
+            __s += "  / Index positions from grid positions: " + GridToIndex(_pos);
+
+            __s += " \n";
+            return __s;
+        }
+
+        _string += computeOne(new Vector2(1, -4));
+        _string += computeOne(new Vector2(13, 17));
+        _string += computeOne(new Vector2(-43, 36));
+
+        Debug.Log(_string);
+    }
+
 }

@@ -41,6 +41,14 @@ public class @CameraInputs : IInputActionCollection, IDisposable
                     ""expectedControlType"": ""Vector2"",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""ScrollWheel"",
+                    ""type"": ""Value"",
+                    ""id"": ""865fc623-c419-40a7-a3c0-2dacfeea2150"",
+                    ""expectedControlType"": ""Axis"",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -76,6 +84,17 @@ public class @CameraInputs : IInputActionCollection, IDisposable
                     ""action"": ""MouseRightClick"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""b18efdbb-7f6b-4a65-8a7a-85ea2405644d"",
+                    ""path"": ""<Mouse>/scroll/y"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ScrollWheel"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -87,6 +106,7 @@ public class @CameraInputs : IInputActionCollection, IDisposable
         m_Default_MouseRightClick = m_Default.FindAction("MouseRightClick", throwIfNotFound: true);
         m_Default_MouseMiddleClick = m_Default.FindAction("MouseMiddleClick", throwIfNotFound: true);
         m_Default_MouseMovement = m_Default.FindAction("MouseMovement", throwIfNotFound: true);
+        m_Default_ScrollWheel = m_Default.FindAction("ScrollWheel", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -139,6 +159,7 @@ public class @CameraInputs : IInputActionCollection, IDisposable
     private readonly InputAction m_Default_MouseRightClick;
     private readonly InputAction m_Default_MouseMiddleClick;
     private readonly InputAction m_Default_MouseMovement;
+    private readonly InputAction m_Default_ScrollWheel;
     public struct DefaultActions
     {
         private @CameraInputs m_Wrapper;
@@ -146,6 +167,7 @@ public class @CameraInputs : IInputActionCollection, IDisposable
         public InputAction @MouseRightClick => m_Wrapper.m_Default_MouseRightClick;
         public InputAction @MouseMiddleClick => m_Wrapper.m_Default_MouseMiddleClick;
         public InputAction @MouseMovement => m_Wrapper.m_Default_MouseMovement;
+        public InputAction @ScrollWheel => m_Wrapper.m_Default_ScrollWheel;
         public InputActionMap Get() { return m_Wrapper.m_Default; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -164,6 +186,9 @@ public class @CameraInputs : IInputActionCollection, IDisposable
                 @MouseMovement.started -= m_Wrapper.m_DefaultActionsCallbackInterface.OnMouseMovement;
                 @MouseMovement.performed -= m_Wrapper.m_DefaultActionsCallbackInterface.OnMouseMovement;
                 @MouseMovement.canceled -= m_Wrapper.m_DefaultActionsCallbackInterface.OnMouseMovement;
+                @ScrollWheel.started -= m_Wrapper.m_DefaultActionsCallbackInterface.OnScrollWheel;
+                @ScrollWheel.performed -= m_Wrapper.m_DefaultActionsCallbackInterface.OnScrollWheel;
+                @ScrollWheel.canceled -= m_Wrapper.m_DefaultActionsCallbackInterface.OnScrollWheel;
             }
             m_Wrapper.m_DefaultActionsCallbackInterface = instance;
             if (instance != null)
@@ -177,6 +202,9 @@ public class @CameraInputs : IInputActionCollection, IDisposable
                 @MouseMovement.started += instance.OnMouseMovement;
                 @MouseMovement.performed += instance.OnMouseMovement;
                 @MouseMovement.canceled += instance.OnMouseMovement;
+                @ScrollWheel.started += instance.OnScrollWheel;
+                @ScrollWheel.performed += instance.OnScrollWheel;
+                @ScrollWheel.canceled += instance.OnScrollWheel;
             }
         }
     }
@@ -186,5 +214,6 @@ public class @CameraInputs : IInputActionCollection, IDisposable
         void OnMouseRightClick(InputAction.CallbackContext context);
         void OnMouseMiddleClick(InputAction.CallbackContext context);
         void OnMouseMovement(InputAction.CallbackContext context);
+        void OnScrollWheel(InputAction.CallbackContext context);
     }
 }

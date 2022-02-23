@@ -1,5 +1,19 @@
 using UnityEngine;
 
+    /*
+        After a while coding this, I notice that I could have used two BIG Two-dimentional tables for this whole "Is This Space Free" part
+        A first two-dimensional table that uses the position indexes used in TriangleGrid to get the node's number
+        Then use another table that stores the free and taken spaces for each node
+
+        This would've been way easier than doing raycasts in every direction and get references of each script,
+        ESPECIALLY when destroying a block, I need to do all of the raycasts backwards and do all of the math backwards
+        because the block itself doesn't have a script to remember all of it (I almost prefer it that way)
+
+        Getting the node to the right of the current one would be one mathematical formula instead of a raycast, saving performances and coding time.
+        I might even have been able to store references to all of those GrisNodesScript in a table for easy access
+        However I thought about it too late, and refactoring the whole code is not possible anymore
+    */
+
 [RequireComponent(typeof(MeshRenderer))]
 public class GridNodesScript : MonoBehaviour
 {
@@ -71,5 +85,10 @@ public class GridNodesScript : MonoBehaviour
     {
         // Mark the space as free
         isSpaceFree[i] = true;
+    }
+
+    public bool IsThisSpaceFree(int i)
+    {
+        return (isSpaceFree[i]);
     }
 }

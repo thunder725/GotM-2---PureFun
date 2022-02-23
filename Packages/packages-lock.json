@@ -1,5 +1,11 @@
 {
   "dependencies": {
+    "com.personal.personal.transformplus": {
+      "version": "file:TransformsPlus",
+      "depth": 0,
+      "source": "embedded",
+      "dependencies": {}
+    },
     "com.unity.cinemachine": {
       "version": "2.6.11",
       "depth": 0,

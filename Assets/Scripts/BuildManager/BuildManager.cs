@@ -27,7 +27,7 @@ public class BuildManager : MonoBehaviour
 
     void Start()
     {
-        Debug.Log(dictionnary.GetPrefab("DefaultTube").name);
+        // Debug.Log(dictionnary.GetPrefab("DefaultTube").name);
         mousePointer = MousePointerScript._instance;
     }
 
@@ -74,7 +74,7 @@ public class BuildManager : MonoBehaviour
             Vector3 raycastStartPos = cubeNode.transform.position + raycastDirection;
 
             // Visualize the ray's trajectory
-            Debug.DrawRay(raycastStartPos, raycastDirection * 10000, Color.blue, 99);
+            // Debug.DrawRay(raycastStartPos, raycastDirection * 10000, Color.blue, 99);
 
             RaycastHit hit;
             // Do the raycast towards the good place
