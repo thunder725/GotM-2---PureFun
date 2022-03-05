@@ -1,3 +1,4 @@
+// using System.Diagnostics;
 using UnityEngine;
 
 
@@ -36,8 +37,19 @@ public class BlocksDADPreview : MonoBehaviour
             // Prevent errors if somehow the user never had their mouse over the game area
             if (mousePointer.currentSelectedCube != null)
             {
-
                 transform.position = mousePointer.currentSelectedCubeScript.GetLowestFreeSpacePoint();
+
+
+                // I'm allowing up to 15 blocks in height
+                // Each node has a max table of 16 just in case of an exception
+                // And there's another debug method where something out of the 16 spaces returns -1 which is handled by the BuildManager
+                // but I'm locking the 16th place here just to be sure, which is at height 30 and up (since index 0 is at 0)
+                // Why not making this in the CheckIfPositionIsCorrect? Because it gets called BEFORE the block updates its position
+                // So it thinks it's still at its previous position, so I can't check the y position because it'll be delayed by 1 block
+                if (transform.position.y > 29)
+                {
+                    ChangeColor(false);
+                }
             }
         }
         // Else try to spawn and destroy itself no matter what
@@ -69,9 +81,13 @@ public class BlocksDADPreview : MonoBehaviour
     // Called when the block preview rotates AND when the block preview changes position
     void CheckIfPositionIsCorrect()
     {
-        RaycastHit hit = DoRaycastTowardsRotation();
+        // Debug.Log("Checking");
 
+        // Create the bool
         bool isSpaceFree;
+
+        // If I'm at the correct height, raycast for the postions
+        RaycastHit hit = DoRaycastTowardsRotation();    
 
         // The blocks to check depends on the current block 
         switch (thisBlocksName)

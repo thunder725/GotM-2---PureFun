@@ -54,6 +54,10 @@ public class BuildManager : MonoBehaviour
         // Save the height INDEX at which we'll build. (index so 0, 1, 2, 3 instead of 0, 2, 4, 6, etc.)
         var buildHeight = _nodeScript.GetLowestFreeSpace();
 
+        // null exception
+        if (buildHeight == -1)
+        {Debug.LogError("Tried to input -1 to build: BuildManager line 55."); return;}
+
         // Creating the Building Block at the right position
         Instantiate(blockPrefab, _nodeScript.GetLowestFreeSpacePoint(), Quaternion.Euler(0, rotationAngle, 0));
 

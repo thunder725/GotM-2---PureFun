@@ -5,7 +5,8 @@ using UnityEngine.InputSystem;
 // Movement Script for the camera: 
 // Middle Mouse + Movement => Panning following the camera's plane
 // Right Mouse + Movement => Rotation with a point on the ground close to the middle of the screen
-// Scroll Wheel => Zoom in and out
+// Buttons on the UI => Zoom in and out
+// Not using the scroll wheel because it's linked to "rotating a block when placing it" already
 
 
 // Why not use a Cinemachine? It has a way to move using inputs!
@@ -71,7 +72,9 @@ public class CameraController : MonoBehaviour
         RepositionCamera();
     }
 
-
+    // There's a problem with the rotation when looking up, but only when doing so while the camera is high enoug...
+    // It might come from a mixed problem of RotateAround + LookAt + Clamping the vertical rotation,
+    // But since it's rotation I don't really know how to debug it, woops
     void Rotating()
     {
         // Horizontal Rotating Around
@@ -111,7 +114,7 @@ public class CameraController : MonoBehaviour
 
             transform.rotation = Quaternion.Euler(currentRotation.x, currentRotation.y, currentRotation.z);
 
-
+            Debug.Log(currentRotation + "    " + transform.rotation);
 
         }
 
@@ -119,9 +122,15 @@ public class CameraController : MonoBehaviour
     }
 
 
-    void Zoom(InputAction.CallbackContext c)
+    public void ZoomIn()
     {
-        transform.position += transform.forward * zoomSpeed * ScrollValue();
+        transform.position += transform.forward * zoomSpeed;
+        RepositionCamera();
+    }
+
+    public void ZoomOut()
+    {
+        transform.position -= transform.forward * zoomSpeed;
         RepositionCamera();
     }
 
@@ -176,21 +185,16 @@ public class CameraController : MonoBehaviour
     public Vector2 MouseMovement()
     { return inputs.Default.MouseMovement.ReadValue<Vector2>(); }
 
-    public float ScrollValue()
-    { return Math.Sign(inputs.Default.ScrollWheel.ReadValue<float>()); }
-
     // ============= [INPUTS STUFF] =============
 
     void OnEnable()
     {
         inputs.Enable();
-        inputs.Default.ScrollWheel.performed += Zoom;
     }
 
     void OnDisable()
     {
         inputs.Disable();
-        inputs.Default.ScrollWheel.performed -= Zoom;
     }
 
     // ============ [MISC] ==============

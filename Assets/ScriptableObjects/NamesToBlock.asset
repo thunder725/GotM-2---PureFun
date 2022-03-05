@@ -14,6 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   entryList:
   - name: DefaultTube
-    blockPrefab: {fileID: 526493314995980583, guid: c4ae6768cd2dee8418b9671ce21a2e66, type: 3}
+    blockPrefab: {fileID: 2146709072745233529, guid: 2bed30f3d9f82f448b53251ff69047bd, type: 3}
   - name: BridgeTube
-    blockPrefab: {fileID: 5227872993605288310, guid: 5beb379950774fa44a67633935b43fe5, type: 3}
+    blockPrefab: {fileID: 8766557071331308314, guid: cd53412d0a909824793cbbe81948f006, type: 3}

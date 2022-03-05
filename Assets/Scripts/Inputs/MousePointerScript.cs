@@ -58,7 +58,7 @@ public class MousePointerScript : MonoBehaviour
     void Update()
     {
         // Light up the closest cube, the name gives it pretty well
-        LightUpClosestCubeInUpdate();
+        if (!PlayMode.isPlayMode){LightUpClosestCubeInUpdate();}
     }
 
 
@@ -109,6 +109,30 @@ public class MousePointerScript : MonoBehaviour
             }
         }
     }    
+
+    void EnteringPlayMode(bool value)
+    {
+        if (value)
+        {
+            if (currentSelectedBlock != null)
+            {
+                // Toggle off the Outline
+                currentSelectedBlock.GetComponent<Outline>().enabled = false;
+
+                // Previous
+                previousSelectedBlock = currentSelectedBlock;
+                previousCubeReferenced = currentSelectedCube;
+
+                // Removing the references
+                currentSelectedCube = null;
+                currentSelectedBlock = null;
+            }
+        }
+        else
+        {
+
+        }
+    }
     
 
     // =========== [PRESSING AND SCROLLING METHODS] =============
@@ -166,8 +190,17 @@ public class MousePointerScript : MonoBehaviour
             // Do a raycast that hits the visible block it encounters
             if (Physics.Raycast(ray, out RaycastHit raycastHit, Mathf.Infinity, BlocksLayer))
             {
-                // Save the block 
-                currentSelectedBlock = raycastHit.transform.gameObject;
+                // Special case if Bridge Block (of course they do)
+                // Because it needs to have rotated colliders, which means having them in children
+                if (raycastHit.transform.gameObject.name.Contains("Bridge"))
+                {
+                    currentSelectedBlock = raycastHit.transform.parent.gameObject;
+                }
+                else 
+                {
+                    // Save the block 
+                    currentSelectedBlock = raycastHit.transform.gameObject;
+                }
 
                 // Toggle on the Outline
                 currentSelectedBlock.GetComponent<Outline>().enabled = true;                
@@ -185,9 +218,6 @@ public class MousePointerScript : MonoBehaviour
                     // Replace reference
                     previousSelectedBlock = currentSelectedBlock;
                 }
-
-                // TO-DO : Make the HUD appear to rotate the element 
-
             }
         }
         // Debug.Log("CLICKED");
@@ -231,11 +261,15 @@ public class MousePointerScript : MonoBehaviour
         inputs.Enable(); 
         inputs.Default.MouseLeftClick.started += Clicked;
         inputs.Default.ScrollWheel.started += Scrolling;
+
+        PlayMode.PlayModeEvent += EnteringPlayMode;
     }
     private void OnDisable()
     { 
         inputs.Disable(); 
         inputs.Default.MouseLeftClick.started -= Clicked;
         inputs.Default.ScrollWheel.started -= Scrolling;
+
+        PlayMode.PlayModeEvent -= EnteringPlayMode;
     }
 }

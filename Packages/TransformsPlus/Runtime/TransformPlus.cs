@@ -1,6 +1,6 @@
 using UnityEngine;
 
-// Homemade Mathf extention for other mathematical equations and constants
+// Homemade Extension for added utility methods
 public class TransformPlus : MonoBehaviour
 {
     /// <summary> Returns the closest GameObject from the Position. </summary>

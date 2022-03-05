@@ -28,14 +28,6 @@
                     "expectedControlType": "Vector2",
                     "processors": "",
                     "interactions": ""
-                },
-                {
-                    "name": "ScrollWheel",
-                    "type": "Value",
-                    "id": "865fc623-c419-40a7-a3c0-2dacfeea2150",
-                    "expectedControlType": "Axis",
-                    "processors": "",
-                    "interactions": ""
                 }
             ],
             "bindings": [
@@ -69,17 +61,6 @@
                     "processors": "",
                     "groups": "",
                     "action": "MouseRightClick",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "b18efdbb-7f6b-4a65-8a7a-85ea2405644d",
-                    "path": "<Mouse>/scroll/y",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "ScrollWheel",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

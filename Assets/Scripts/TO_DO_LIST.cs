@@ -6,14 +6,6 @@ namespace ToDoList
 
     - Go from Build mode to Play mode and the other way around
 
-    - Open menu when clicking on placed block :
-            - Rotate block
-            - Delete block
-
-    - Free Camera :     - Movement
-                        - Paning
-                        - Rotation around a point on the ground at the center of the screen
-
     - Show the trajectory of the Ramps when placing them.
 
     ======================= [VISUALS] =======================
