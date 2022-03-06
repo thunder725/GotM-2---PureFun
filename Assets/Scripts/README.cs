@@ -17,6 +17,7 @@ namespace README
 
         The whole "level builder" took so much time to think about and implement that the actual fun part of the game
     couldn't be done in time, like tubes that are ramps that launch the marble away with particles and a path pre-visualizer.
+    Kinda ironic that the level builder took so long I couldn't add things to build...
 
         So it means that for a "pure fun game that is more a toy than anything else", it's not that fitting.
     The game is not fun to play as because you have so little to do, and the actual "See the marble" part doesn't feel good enough.
@@ -25,6 +26,8 @@ namespace README
     Not only did I learn a lot of things coding-wise, I stepped outside of my confort zone because an entire Level Builder is not something
     I thought I could do in under a month (let's be real I didn't work on it everyday, I also focused on the demoreel or the collaborative game a lot).
     So that's reassuring: I'm capable of doing something complicated if needed; even if the code is pretty messy at the end...
+
+    Next time I'll just to a pinball or a point & click that I can actually finish in time and polish with particles & sounds
 
         TL;DR: It was fun to do, probably not to play... My bad
 

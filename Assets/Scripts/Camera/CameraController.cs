@@ -114,7 +114,7 @@ public class CameraController : MonoBehaviour
 
             transform.rotation = Quaternion.Euler(currentRotation.x, currentRotation.y, currentRotation.z);
 
-            Debug.Log(currentRotation + "    " + transform.rotation);
+            // Debug.Log(currentRotation + "    " + transform.rotation);
 
         }
 

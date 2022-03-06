@@ -7,6 +7,7 @@ public class BuildManager : MonoBehaviour
     string selectedBlockName;
     [SerializeField] LayerMask nodeLayer;
     [SerializeField] NameToBlocksDictionnary dictionnary;
+    [SerializeField] AudioSource PlacingBlockAudio;
 
     // ============= [GENERAL UNITY METHODS] ================
 
@@ -65,6 +66,10 @@ public class BuildManager : MonoBehaviour
 
         // Say to the node that I created another block on top of it
         _nodeScript.FillSpace(buildHeight);
+
+        // Play sound with random pitch
+        PlacingBlockAudio.pitch = Random.Range(.6f, 1.4f);
+        PlacingBlockAudio.Play();
 
         // Check if the block is a particular one for node blocking reasons
         if (selectedBlockName == "BridgeTube")

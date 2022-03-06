@@ -8,6 +8,7 @@ public class BlocksInteractionButtonsUI : MonoBehaviour
 {
     GameObject currentlyReferencedBlock;
     [SerializeField] LayerMask nodeLayer;
+    [SerializeField] AudioSource DestroyBlockAudio;
 
     public void DeleteBlock()
     {
@@ -47,6 +48,10 @@ public class BlocksInteractionButtonsUI : MonoBehaviour
 
         // Destroy the block
         Destroy(currentlyReferencedBlock);
+
+        // Play the sound
+        DestroyBlockAudio.pitch = Random.Range(.5f, 1.2f);
+        DestroyBlockAudio.Play();
     }
 
 }
