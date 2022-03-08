@@ -8,6 +8,7 @@ public class BuildManager : MonoBehaviour
     [SerializeField] LayerMask nodeLayer;
     [SerializeField] NameToBlocksDictionnary dictionnary;
     [SerializeField] AudioSource PlacingBlockAudio;
+    [SerializeField] GameObject BlockSpawnParticleSystem;
 
     // ============= [GENERAL UNITY METHODS] ================
 
@@ -61,6 +62,9 @@ public class BuildManager : MonoBehaviour
 
         // Creating the Building Block at the right position
         Instantiate(blockPrefab, _nodeScript.GetLowestFreeSpacePoint(), Quaternion.Euler(0, rotationAngle, 0));
+
+        // Spawn particles
+        Instantiate(BlockSpawnParticleSystem, _nodeScript.GetLowestFreeSpacePoint(), Quaternion.identity);
 
         // Debug.Log("Build block at height " +_nodeScript.GetLowestFreeSpace());
 
